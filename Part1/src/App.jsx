@@ -6,18 +6,21 @@ const Header = (props) => {
   )
 }
 
-const Part = (props) => {
+const Module = (props) => {
   return (
-    <p>{props.parts.name} {props.parts.exercises}</p>
+    <p>
+      {props.parts.name} 
+      {props.parts.exercises}
+      </p>
   )
 }
 
 const Content = (props) => {
   return (
    <div>
-     <Part parts={props.course.parts[0]}/>
-     <Part parts={props.course.parts[1]}/>
-     <Part parts={props.course.parts[2]}/>
+     <Module parts={props.course.parts[0]}/>
+     <Module parts={props.course.parts[1]}/>
+     <Module parts={props.course.parts[2]}/>
     </div>
   )
 }
