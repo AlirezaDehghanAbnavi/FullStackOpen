@@ -4,19 +4,19 @@ const Button = (props) => (
   <button onClick={props.onClick}>{props.text}</button>
 )
 
-const Display = props => <div>{props.text} {props.value}</div>
+const StatisticLine = props => <div>{props.text} {props.value}</div>
 
 const Statistics = (props) => {
     const { good, bad, neutral, total} = props;
     if(total == 0) return <div>No feedback given</div>
     return (
         <>  
-            <Display text="good" value={good}/>
-            <Display text="neutral" value={neutral}/>
-            <Display text="bad" value={bad}/> 
-            <Display text="all" value={total}/>
-            <Display text="average" value={(good - bad) / total}/>
-            <Display text="positive" value={(good / total * 100) + " %"}/>
+            <StatisticLine text="good" value={good}/>
+            <StatisticLine text="neutral" value={neutral}/>
+            <StatisticLine text="bad" value={bad}/> 
+            <StatisticLine text="all" value={total}/>
+            <StatisticLine text="average" value={(good - bad) / total}/>
+            <StatisticLine text="positive" value={(good / total * 100) + " %"}/>
         </>
     )
 }
@@ -49,7 +49,7 @@ const App = () => {
     <Button onClick={setNeutralHandler} text="neutral"/>
     <Button onClick={setBadHandler} text="bad"/>
     <h1>statistcs</h1>
-    <Display/>
+    <StatisticLine/>
     <Statistics good={good} bad={bad} neutral={neutral} total={total}/>
     </div>
   )
