@@ -27,17 +27,22 @@ const App = () => {
 
   const voteHandler = () => {
     const copy = [...voteCount];
-    console.log("Handling vote system")
+    console.log("Current vote count", copy)
     copy[selected] += 1
     setVoteCount(copy)
   }
 
+  const maxIndex = voteCount.indexOf(Math.max(...voteCount));
+
   return (
     <div>
-      <h4>{anecdotes[selected]}</h4>
-      <h3>{voteCount[selected]}</h3>
-      <Button onClick={handleSelector} text="next anecdote"/>
+      <h2>Anecdote of the day</h2>
+      <p>{anecdotes[selected]}</p>
+      <p>has {voteCount[selected]} votes</p>
       <Button onClick={voteHandler} text="vote"/>
+      <Button onClick={handleSelector} text="next anecdote"/>
+      <h2>Anecdote with most votes</h2>
+      <p>{anecdotes[maxIndex]}</p>
     </div>
   )
 }
