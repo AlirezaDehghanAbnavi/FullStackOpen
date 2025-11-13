@@ -1,4 +1,4 @@
-# FullStackOpen
+## FullStackOpen
 
-Solutions of the exercises of [FSO Course](https://fullstackopen.com/en).
+Solutions of the exercises of [FullStackOpen Course](https://fullstackopen.com/en).
 
