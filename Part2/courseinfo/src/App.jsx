@@ -1,16 +1,15 @@
-const Header = (props) => {
+const Header = ({course}) => {
   return (
     <div>
-    <h1>{props.course.name}</h1>
+    <h1>{course.name}</h1>
     </div>
   )
 }
 
-const Module = ({parts}) => {
+const Module = ({part}) => {
   return (
     <p>
-      {parts.name} 
-      {parts.exercises}
+      {part.name} {part.exercises}
     </p>
   )
 }
@@ -19,7 +18,7 @@ const Content = ({parts}) => {
   return (
     <div>
       {parts.map(part => 
-        <Module key={course.id} part={part}/>
+        <Module key={part.id} part={part}/>
       )}
     </div>
   )
@@ -29,7 +28,7 @@ const Course = ({course}) => {
   return (
     <>
     <Header course={course} />
-    <Content course={course.parts} />
+    <Content parts={course.parts} />
     </>
   )
 }
