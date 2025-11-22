@@ -1,8 +1,9 @@
-import { use, useState } from 'react'
+import { useEffect, useState } from 'react'
 import './style.css'
 import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -39,6 +40,17 @@ const App = () => {
   }
 
   const personToShow = persons.filter(p => p.name.toLowerCase().includes(searchedPerson.toLowerCase()))
+
+  const hook = () => {
+    console.log("effect")
+    axios.get("http://localhost:3001/persons")
+         .then(response => {
+          console.log("Promise fullfilled")
+          setPersons(response.data)
+         })
+  }
+
+  useEffect(hook, [])
 
   return (
     <div>
