@@ -3,6 +3,7 @@ import './style.css'
 import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
+import CommunicationService from './services/CommunicationService'
 import axios from 'axios'
 
 const App = () => {
@@ -24,14 +25,13 @@ const App = () => {
       number: newNumber,
       id: String(persons.length+1)
     } 
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNumber('')
-
-    axios.post("http://localhost:3001/persons", personObject)
-         .then(response => {
-          console.log(response)
-         })
+    
+    CommunicationService.create(personObject).then((returnedPerson) => {
+      setPersons(persons.concat(returnedPerson))
+      setNewName('')
+      setNewNumber('')
+    })
+    
   }
 
   const handleNameChange = (event) => {
@@ -48,16 +48,13 @@ const App = () => {
 
   const personToShow = persons.filter(p => p.name.toLowerCase().includes(searchedPerson.toLowerCase()))
 
-  const hook = () => {
-    console.log("effect")
-    axios.get("http://localhost:3001/persons")
-         .then(response => {
-          console.log("Promise fullfilled")
-          setPersons(response.data)
-         })
-  }
-
-  useEffect(hook, [])
+  useEffect(() => {
+    CommunicationService.getAll()
+                        .then(initialPhoneBook => {
+                          console.log("Promise fullfilled")
+                          setPersons(initialPhoneBook)
+                        })
+  }, [])
 
   return (
     <div>
