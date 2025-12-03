@@ -13,7 +13,7 @@ const App = () => {
   const [searchedPerson, setSearchedPerson] = useState('');
   
   const addName = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     if (persons.some(p => p.name == newName)){
       alert(`${newName} is already added to phonebook`)
@@ -31,7 +31,6 @@ const App = () => {
       setNewName('')
       setNewNumber('')
     })
-    
   }
 
   const handleNameChange = (event) => {
@@ -56,6 +55,15 @@ const App = () => {
                         })
   }, [])
 
+  const deleteHandler = (id, person) => {
+    if(confirm(`Delete ${person}?`)){
+      CommunicationService.deleteFromDB(id)
+                          .then(() => {
+                          console.log("Delete request fullfilled")
+                          setPersons(persons.filter(p=>p.id !== id))
+                        }).catch(error => alert(error))}
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -69,7 +77,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Person persons={personToShow}/>      
+      <Person persons={personToShow} deleteHandler={deleteHandler} />      
     </div>
   )
 }
