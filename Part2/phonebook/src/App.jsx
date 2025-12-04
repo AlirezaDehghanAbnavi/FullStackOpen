@@ -4,7 +4,6 @@ import Person from './components/Person'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import CommunicationService from './services/CommunicationService'
-import axios from 'axios'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -15,22 +14,40 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault()
 
-    if (persons.some(p => p.name == newName)){
-      alert(`${newName} is already added to phonebook`)
-      return
+    if (!newName) {
+      alert("Name cannot be empty");
+    return;
     }
-    
+
+    if (!newNumber) {
+      alert("Number cannot be empty");
+    return;
+    }
+
     const personObject = {
       name: newName,
       number: newNumber,
       id: String(persons.length+1)
-    } 
+    }
+
+    const existingPerson = persons.find(p => p.name === newName);
+
+    if (existingPerson){
+      if (existingPerson.number !== newNumber){
+        numberHandler(existingPerson.id, existingPerson)
+      } else {
+        alert(`${newName} is already added to phonebook`)
+        }
+      return
+    }
     
     CommunicationService.create(personObject).then((returnedPerson) => {
       setPersons(persons.concat(returnedPerson))
       setNewName('')
       setNewNumber('')
     })
+
+
   }
 
   const handleNameChange = (event) => {
@@ -62,6 +79,17 @@ const App = () => {
                           console.log("Delete request fullfilled")
                           setPersons(persons.filter(p=>p.id !== id))
                         }).catch(error => alert(error))}
+  }
+
+  const numberHandler = (id, person) => {
+    if(confirm(`${person.name} is already addded to phonebook, replace the old number with a new one?`)){
+      const updatedPerson = { ...person, number: newNumber };
+      CommunicationService.updateNumber(id, updatedPerson)
+                          .then((returnedPerson) => {
+                          setPersons(persons.map(p => p.id === id ? returnedPerson : p))
+                          setNewName('')
+                          setNewNumber('')
+                          }).catch(error => alert(error))}
   }
 
   return (
