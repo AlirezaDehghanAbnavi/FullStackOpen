@@ -29,8 +29,10 @@ const Country = ({ searchedCountry, handleCountryChange, countries, setCountries
                         ))}
                     </ul>
                     <img
-                        src={countries[0].flags.png}
-                        alt={`Flag of ${countries[0].name.common}`}
+                        src={countries[0].name.common === "Iran" ?
+                            "https://upload.wikimedia.org/wikipedia/commons/f/fd/State_flag_of_Iran_%281964–1980%29.svg"
+                            : countries[0].flags.png}
+                    alt={`Flag of ${countries[0].name.common}`}
                     />
                 </div>
             )
