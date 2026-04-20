@@ -1,4 +1,4 @@
-const Country = ({ searchedCountry, handleCountryChange, countries, setCountries }) => (
+const Country = ({ searchedCountry, handleCountryChange, countries, setCountries, setSelectedCountry, weather }) => (
     <div>
         <form>
             find countries <input type="text" value={searchedCountry} onChange={handleCountryChange} />
@@ -11,7 +11,7 @@ const Country = ({ searchedCountry, handleCountryChange, countries, setCountries
 
             {countries.length <= 10 && countries.length > 1 && (
                 countries.map(country => (
-                    <div key={country.cca3}>{country.name.common} <button onClick={() => setCountries([country])}>Show</button></div>
+                    <div key={country.cca3}>{country.name.common} <button onClick={() => { setCountries([country]), setSelectedCountry(country) }}>Show</button></div>
                 ))
             )}
 
@@ -32,8 +32,21 @@ const Country = ({ searchedCountry, handleCountryChange, countries, setCountries
                         src={countries[0].name.common === "Iran" ?
                             "https://upload.wikimedia.org/wikipedia/commons/f/fd/State_flag_of_Iran_%281964–1980%29.svg"
                             : countries[0].flags.png}
-                    alt={`Flag of ${countries[0].name.common}`}
+                        alt={`Flag of ${countries[0].name.common}`}
                     />
+                    {weather && weather.main ? (
+                        <div>
+                            <h2>Weather in {countries[0].capital}</h2>
+                            <p>Temperature: {weather.main.temp} Celsius</p>
+                            <img
+                                src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                                alt="weather icon"
+                            />
+                            <p>Wind: {weather.wind.speed} m/s</p>
+                        </div>
+                    ) : (
+                        <p>Loading weather...</p>
+                    )}
                 </div>
             )
             }

@@ -1,25 +1,46 @@
 import { useState, useEffect } from "react";
 import Country from "./components/Country";
-import fetchCountry from "./services/API";
+import fetchCountry from "./services/CountryAPI";
+import fetchWeather from "./services/WeatherAPI";
 
 const App = () => {
   const [searchedCountry, setSearchedCountry] = useState('');
   const [countries, setCountries] = useState([]);
+  const [weather, setWeather] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   useEffect(() => {
-    if (searchedCountry === '') {
-      setCountries([]);
+    const delayFetchAPI = setTimeout(() => {
+      if (searchedCountry.trim() === '') {
+        setCountries([]);
+        setSelectedCountry(null);
+        return;
+      }
+
+      fetchCountry(searchedCountry)
+        .then(data => {
+          setCountries(data);
+          if (data.length === 1) {
+            setSelectedCountry(data[0]);
+          }
+        })
+        .catch(() => setCountries([]));
+    }, 500);
+
+    return () => clearTimeout(delayFetchAPI);
+  }, [searchedCountry]);
+
+  
+  useEffect(() => {
+    if (!selectedCountry) {
+      setWeather(null);
       return;
     }
 
-    fetchCountry(searchedCountry)
-      .then(data => {
-        setCountries(data);
-      })
-      .catch(err => {
-        setCountries([]);
-      });
-  }, [searchedCountry]);
+    fetchWeather(selectedCountry.capital)
+      .then(data => setWeather(data))
+      .catch(() => setWeather(null));
+  }, [selectedCountry]);
 
   const handleCountryChange = (event) => {
     setSearchedCountry(event.target.value)
@@ -31,6 +52,9 @@ const App = () => {
         handleCountryChange={handleCountryChange}
         countries={countries}
         setCountries={setCountries}
+        setWeather={setWeather}
+        setSelectedCountry={setSelectedCountry}
+        weather={weather}
       />
     </div>)
 }
