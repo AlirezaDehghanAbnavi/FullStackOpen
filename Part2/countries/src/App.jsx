@@ -30,7 +30,7 @@ const App = () => {
     return () => clearTimeout(delayFetchAPI);
   }, [searchedCountry]);
 
-  
+
   useEffect(() => {
     if (!selectedCountry) {
       setWeather(null);
@@ -52,7 +52,6 @@ const App = () => {
         handleCountryChange={handleCountryChange}
         countries={countries}
         setCountries={setCountries}
-        setWeather={setWeather}
         setSelectedCountry={setSelectedCountry}
         weather={weather}
       />
