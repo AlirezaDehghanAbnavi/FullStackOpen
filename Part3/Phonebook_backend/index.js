@@ -52,10 +52,31 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const person = request.body;
+  const { name, number } = request.body;
+  if (!name || !number || !name.trim() || !number.trim()) {
+    return response.status(400).json({
+      error: 'name or number missing'
+    });
+  }
+
+  const personAlreadyExists = persons.some(
+    p => p.name.toLowerCase() === name.toLowerCase()
+  );
+  if (personAlreadyExists) {
+    return response.status(400).json({
+      error: 'name must be unique'
+    });
+  }
+
+  const person = {
+    id: Math.floor(Math.random() * 1000000).toString(),
+    name: name.trim(),
+    number: number.trim()
+  };
+
   persons.push(person);
-  response.status(201).end();
-})
+  response.status(201).json(person);
+});
 
 app.delete('/api/persons/:id', (request, response) => {
   const id = request.params.id;
