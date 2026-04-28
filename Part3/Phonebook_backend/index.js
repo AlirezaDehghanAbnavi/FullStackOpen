@@ -32,10 +32,10 @@ app.get('/api/persons', (request, response) => {
 
 app.get('/info', (request, response) => {
   const timestamp = new Date();
-  const noPeople = persons.length || 0;
+  const numberOfPeople = persons.length || 0;
 
   response.send(`
-    <p>Phonebook has info for ${noPeople} people</p>
+    <p>Phonebook has info for ${numberOfPeople} people</p>
     <p>${timestamp}</p>
     `);
 })
@@ -49,6 +49,12 @@ app.get('/api/persons/:id', (request, response) => {
     console.log(`Person with ID:{${id}} does not exist`);
     response.status(404).end();
   }
+})
+
+app.post('/api/persons', (request, response) => {
+  const person = request.body;
+  persons.push(person);
+  response.status(201).end();
 })
 
 app.delete('/api/persons/:id', (request, response) => {
