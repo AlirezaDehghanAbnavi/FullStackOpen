@@ -28,6 +28,11 @@ const App = () => {
       return;
     }
 
+    if (newName.length < 3) {
+      setErrorMessage(`Person validation failed: name '${newName}' is shorter than the required length(3).`)
+      return;
+    }
+
     const personObject = {
       name: newName,
       number: newNumber,
