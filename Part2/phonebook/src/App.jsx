@@ -14,6 +14,8 @@ const App = () => {
   const [searchedPerson, setSearchedPerson] = useState('')
   const [notification, setNotification] = useState(null)
   const [error, setErrorMessage] = useState(null)
+  const phoneRegex = /^\d{2,3}-\d+$/;
+
 
   const addName = (event) => {
     event.preventDefault()
@@ -28,8 +30,28 @@ const App = () => {
       return;
     }
 
+
     if (newName.length < 3) {
       setErrorMessage(`Person validation failed: name '${newName}' is shorter than the required length(3).`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      return;
+    }
+
+    if (newNumber.length < 8) {
+      setErrorMessage(`Person validation failed: number '${newNumber}' is shorter than the required length(8).`)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      return;
+    }
+
+    if (!phoneRegex.test(newNumber)) {
+      setErrorMessage(`${newNumber} is not a valid phone number (format XX-XXXX or XXX-XXXX)`);
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
       return;
     }
 
@@ -95,13 +117,13 @@ const App = () => {
           console.log("Delete request fullfilled")
           setPersons(persons.filter(p => p.id !== id))
         }).catch(error => {
-        setErrorMessage(
-          `Information of ${person.name} has been already removed from server`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-      })
+          setErrorMessage(
+            `Information of ${person.name} has been already removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
   }
 
@@ -114,13 +136,13 @@ const App = () => {
           setNewName('')
           setNewNumber('')
         }).catch(error => {
-        setErrorMessage(
-          `Information of ${person.name} has been already removed from server`
-        )
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-      })
+          setErrorMessage(
+            `Information of ${person.name} has been already removed from server`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
   }
 
