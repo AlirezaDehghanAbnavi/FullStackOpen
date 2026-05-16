@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 const blogSchema = mongoose.Schema({
   title: String,
@@ -8,15 +8,15 @@ const blogSchema = mongoose.Schema({
 })
 
 blogSchema.set('toJSON', {
-    transform: (document, returnedObject) => {
-        return {
-            id: returnedObject._id.toString(), 
-            title: returnedObject.title,
-            author: returnedObject.author,
-            url: returnedObject.url,
-            likes: returnedObject.likes
-        }
+  transform: (document, returnedObject) => {
+    return {
+      id: returnedObject._id.toString(),
+      title: returnedObject.title,
+      author: returnedObject.author,
+      url: returnedObject.url,
+      likes: returnedObject.likes
     }
+  }
 })
 
 module.exports = mongoose.model('Blog', blogSchema)
