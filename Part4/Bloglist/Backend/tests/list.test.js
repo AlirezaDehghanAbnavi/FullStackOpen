@@ -106,3 +106,12 @@ describe('Most blog', () => {
         })
     })
 })
+
+describe('Most like', () => {
+    test('is gotten by author', () => {
+        const result = listHelper.mostLikes(blogs)
+        assert.deepStrictEqual(result, {
+            author: "Edsger W. Dijkstra", likes: 17
+        })
+    })
+})
